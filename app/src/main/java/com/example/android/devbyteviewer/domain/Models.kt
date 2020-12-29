@@ -30,6 +30,8 @@ import com.example.android.devbyteviewer.util.smartTruncate
 /**
  * Videos represent a devbyte that can be played.
  */
+
+// model adalah data class yang berguna untuk menyimpan data yang akan ditampilkan di screen
 data class Video(val title: String,
                  val description: String,
                  val url: String,

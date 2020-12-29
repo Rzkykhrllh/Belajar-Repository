@@ -16,3 +16,16 @@
  */
 
 package com.example.android.devbyteviewer.repository
+
+import com.example.android.devbyteviewer.database.VideoDatabase
+
+/**  Repository adalah sebuah class untuk fetching data
+ * dari internet dan menyimpannya di disk
+ *
+ * terdapat 2 fungsi :
+ * 1. load : untuk menampilkan data dari cache ke layar
+ * 2. Refresh : untuk memperbarui playlist*/
+
+class VideosRepository (private val database : VideoDatabase){
+
+}

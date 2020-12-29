@@ -16,3 +16,35 @@
  */
 
 package com.example.android.devbyteviewer.work
+
+import android.content.Context
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
+import com.example.android.devbyteviewer.database.getDatabase
+import com.example.android.devbyteviewer.repository.VideosRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import retrofit2.HttpException
+
+/** Refresh worker adalah sebuah class yang berfungsi
+ * menjalankan proses walaupun app gak dibuka*/
+
+class RefreshDataWork (appContext : Context, params : WorkerParameters) :
+        CoroutineWorker(appContext, params){
+
+    companion object{
+        val WORK_NAME = "RefreshDataWorker"
+    }
+
+    override suspend fun doWork(): Result {
+        val database = getDatabase(applicationContext)
+        val repository = VideosRepository(database)
+
+        try {
+            repository.refreshVideo()
+            return Result.success()
+        } catch (e: HttpException) {
+            return Result.retry()
+        }
+    }
+
+}

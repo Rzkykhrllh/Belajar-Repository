@@ -18,6 +18,7 @@
 package com.example.android.devbyteviewer.database
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -47,6 +48,8 @@ fun getDatabase(context : Context) : VideoDatabase{
         if (!::INSTANCE.isInitialized){ //kalau instance belum di init, buat database dulu
             INSTANCE = Room.databaseBuilder(context.applicationContext,
                     VideoDatabase::class.java, "videos").build()
+
+            Log.i("debug", "3.5 belum buat db")
         }
     }
     return INSTANCE

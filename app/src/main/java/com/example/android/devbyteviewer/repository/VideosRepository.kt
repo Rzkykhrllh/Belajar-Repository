@@ -17,6 +17,7 @@
 
 package com.example.android.devbyteviewer.repository
 
+import android.util.Log
 import android.view.animation.Transformation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -39,15 +40,20 @@ class VideosRepository (private val database : VideoDatabase){
 
     val videos : LiveData<List<Video>> = Transformations.map(database.videoDao.getVideos()){
         it.asDomainModel()
-    }
+    } //Transformation map berfungsi untuk mengkonversi 1 live data ke livetada yang lain
 
     /** take new data from network, save it in room*/
     suspend fun refreshVideo(){
         withContext(Dispatchers.IO){
+            Log.i("debug", "2. refresh video begin")
+
             val playlist = Network.devbytes.getPlaylist().await() //ambil data dari network
+            Log.i("debug", "3. after fetching")
 
             database.videoDao.insertAll(*playlist.asDatabaseModel()) // insert playlist ke locak database
             // * itu untuk merubah array menjadi var arg
+            Log.i("debug", "4. after save to room")
+
         }
     }
 

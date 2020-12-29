@@ -16,7 +16,7 @@ data class DatabaseVideo constructor(
         val title: String,
         val description : String,
         val thumbanil : String
-){
+)
     // Fungsi untuk konversi bentuk dari DatabaseVideo ke Video
     fun List<DatabaseVideo>.asDomainModel() : List<Video>{
         return map{
@@ -29,5 +29,5 @@ data class DatabaseVideo constructor(
             )
         }
     }
-}
+
 

@@ -18,6 +18,7 @@
 package com.example.android.devbyteviewer.database
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 /** DAO merupakan sebuah interface yang berfungsi sebagai
@@ -25,7 +26,7 @@ import androidx.room.*
 @Dao
 interface VideoDao{
     @Query("select * from databasevideo")
-    fun getVideos() : List<DatabaseVideo>
+    fun getVideos() : LiveData<List<DatabaseVideo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg videos : DatabaseVideo)

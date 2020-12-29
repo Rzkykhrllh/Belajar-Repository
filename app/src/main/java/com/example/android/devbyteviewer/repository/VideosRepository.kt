@@ -17,7 +17,16 @@
 
 package com.example.android.devbyteviewer.repository
 
+import android.view.animation.Transformation
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.example.android.devbyteviewer.database.VideoDatabase
+import com.example.android.devbyteviewer.database.asDomainModel
+import com.example.android.devbyteviewer.domain.Video
+import com.example.android.devbyteviewer.network.Network
+import com.example.android.devbyteviewer.network.asDatabaseModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**  Repository adalah sebuah class untuk fetching data
  * dari internet dan menyimpannya di disk
@@ -27,5 +36,19 @@ import com.example.android.devbyteviewer.database.VideoDatabase
  * 2. Refresh : untuk memperbarui playlist*/
 
 class VideosRepository (private val database : VideoDatabase){
+
+    val videos : LiveData<List<Video>> = Transformations.map(database.videoDao.getVideos()){
+        it.asDomainModel()
+    }
+
+    /** take new data from network, save it in room*/
+    suspend fun refreshVideo(){
+        withContext(Dispatchers.IO){
+            val playlist = Network.devbytes.getPlaylist().await() //ambil data dari network
+
+            database.videoDao.insertAll(*playlist.asDatabaseModel()) // insert playlist ke locak database
+            // * itu untuk merubah array menjadi var arg
+        }
+    }
 
 }
